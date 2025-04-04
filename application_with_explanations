@@ -1,0 +1,31 @@
+# Importing necessary libraries
+import numpy as np  # NumPy is used for numerical operations and array handling
+import pickle  # Pickle is used for loading the saved machine learning model
+import streamlit as st  # Streamlit is used to create the web app UI
+
+# Load the trained machine learning model from a .pkl file
+with open('model.pkl', 'rb') as f:  # Open the file in read-binary mode
+    model = pickle.load(f)  # Load the model using pickle
+
+# Streamlit Web App Title
+st.title("📈 Stock Price Predictor")  # Displays the title at the top of the web page
+
+# Description using Markdown
+st.markdown("Enter stock details to predict the **Closing Price**.")  # Shows instructions in bold markdown text
+
+# Input fields for user to enter stock data
+open_price = st.number_input("Enter Open Price", min_value=0.0, format="%.2f")  # Input for opening price (2 decimal places)
+high_price = st.number_input("Enter High Price", min_value=0.0, format="%.2f")  # Input for high price (2 decimal places)
+low_price = st.number_input("Enter Low Price", min_value=0.0, format="%.2f")  # Input for low price (2 decimal places)
+volume = st.number_input("Enter Volume", min_value=0, format="%.0f")  # Input for trading volume (integer only)
+
+# Button to trigger prediction
+if st.button("Predict Closing Price"):  # When this button is clicked...
+    # Prepare the input data in the format the model expects (2D array)
+    input_data = np.array([[open_price, high_price, low_price, volume]])  # Create a 2D NumPy array with one row of inputs
+
+    # Make prediction using the loaded model
+    prediction = model.predict(input_data)[0]  # Call the model's predict method and get the first result
+
+    # Display the predicted closing price
+    st.success(f"📉 Predicted Closing Price: **${round(prediction, 2)}**")  # Show the result in a success message box rounded to 2 decimal places
