@@ -1,24 +1,30 @@
-import numpy as np
-import pandas as pd
-import pickle
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
+# Importing necessary libraries
+import numpy as np  # Used for numerical operations (not used directly here, but often useful)
+import pandas as pd  # Used for data manipulation and analysis
+import pickle  # Used for saving the trained machine learning model
+from sklearn.model_selection import train_test_split  # To split the dataset into training and testing sets
+from sklearn.linear_model import LinearRegression  # Linear Regression model from scikit-learn
 
-# Loading dataset
-df = pd.read_csv("C:/Users/User/Downloads/XOM_data.csv")
+# Loading the dataset from a CSV file
+df = pd.read_csv("C:/Users/User/Downloads/XOM_data.csv")  # Load the dataset into a DataFrame
 
-# Selecting features and target
-X = df[['open', 'high', 'low', 'volume']]
-Y = df['close']
+# Selecting input features (independent variables) and target variable (dependent variable)
+X = df[['open', 'high', 'low', 'volume']]  # Feature columns used for prediction
+Y = df['close']  # Target column (what we want to predict)
 
-# Training model
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2,
-                                                    random_state=42)
-model = LinearRegression()
-model.fit(X_train, Y_train)
+# Splitting the dataset into training and testing sets (80% train, 20% test)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+# - test_size=0.2 means 20% of data is for testing
+# - random_state=42 ensures reproducibility (same split every time)
 
-# Saving model using Pickle
-with open('model.pkl', 'wb') as f:
-    pickle.dump(model, f)
+# Creating and training the Linear Regression model
+model = LinearRegression()  # Create a LinearRegression object
+model.fit(X_train, Y_train)  # Train the model on the training data
 
-print("✅ Model saved successfully as model.pkl!")
+# Saving the trained model to a .pkl file using pickle
+with open('model.pkl', 'wb') as f:  # Open (or create) model.pkl file in write-binary mode
+    pickle.dump(model, f)  # Save the trained model to the file
+
+# Confirmation message
+print("✅ Model saved successfully as model.pkl!")  # Notify that the model was saved
+
